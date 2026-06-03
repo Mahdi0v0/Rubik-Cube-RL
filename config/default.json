@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+
+  "_doc": [
+    "Default configuration. Config is DATA (CLAUDE.md section 6): no magic numbers",
+    "in code. Reward shaping in particular is deferred to research and lives here,",
+    "NOT in the env architecture -- the learner's real signal is the ADI depth",
+    "label (cost-to-go), not this per-step reward."
+  ],
+
+  "env": {
+    "max_steps": 50,
+    "reward": {
+      "_doc": "Default is SPARSE: +1 only on reaching solved, 0 otherwise.",
+      "solved": 1.0,
+      "per_step": 0.0,
+      "timeout": 0.0
+    }
+  },
+
+  "scramble": {
+    "min_depth": 1,
+    "max_depth": 30
+  }
+}

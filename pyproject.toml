@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rubiks-rl"
+version = "0.1.0"
+description = "An agent that learns to solve a 3x3 Rubik's Cube via reinforcement learning, with a browser playground."
+readme = "README.md"
+requires-python = ">=3.11"
+# The PURE core (core/, env/ except vec_env) has ZERO runtime dependencies, by
+# design (CLAUDE.md section 3): you can read and test the cube logic with no ML
+# deps installed. Heavy deps live behind extras.
+dependencies = []
+
+[project.optional-dependencies]
+# The learner. PyTorch is confined to rl/, training/, and env/vec_env.py.
+train = ["torch>=2.1"]
+# Dev/test. Note pytest does NOT pull in torch, so `pytest tests/` proves the
+# Phase-1 cube core with zero ML dependencies -- exactly as the contract requires.
+dev = ["pytest>=8", "ruff>=0.4", "black>=24.0"]
+
+[tool.setuptools]
+packages = ["core", "env", "rl", "training"]
+
+[tool.pytest.ini_options]
+# Run pytest from the repo root; this puts the repo on sys.path so `import core`
+# resolves without an editable install (handy for the zero-deps core tests).
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
